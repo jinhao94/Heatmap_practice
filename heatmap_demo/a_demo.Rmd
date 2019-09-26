@@ -1,0 +1,46 @@
+---
+title: "a demo for heatmap..."
+author: "jinh"
+date: "2019年9月25日"
+output: html_document
+---
+
+### 加载包， 导入数据
+### 数据格式打印如下，加减乘除不能做行名或者列名，所以把数据放到第一行
+```{r, warning=FALSE}
+library(printr)
+library(ComplexHeatmap)
+#library(ggplotify)
+library(circlize)
+
+dd<-read.table("input_file.txt",header = T,sep = "\t")
+knitr::kable(head(dd,10),digits =4 , caption="A table produced by printr.")
+```
+### 使用ComplexHeatmap 绘制热图
+
+## 简单暴力版
+```{r}
+Heatmap(dd[,3:ncol(dd)])
+
+```
+
+## 加注释版
+```{r}
+dd_2<-dd[,3:ncol(dd)]
+row.names(dd_2)<-dd$ID2
+row_labels=structure(as.character(dd$ID),names=as.character(dd$ID2))
+Heatmap(dd_2,row_labels=row_labels[rownames(dd_2)], show_column_names = T, cluster_rows = F,show_row_names=T)
+```
+
+### 把字在缩小一点
+```{r}
+Heatmap(dd_2,row_labels=row_labels[rownames(dd_2)], show_column_names = T, cluster_rows = F,show_row_names=T,row_names_gp = gpar(fontsize = 5))
+```
+### 调个好看的颜色
+
+```{r}
+Heatmap(dd_2,row_labels=row_labels[rownames(dd_2)], show_column_names = T, cluster_rows = F,show_row_names=T,row_names_gp = gpar(fontsize = 5),col = colorRamp2(c(5,0,-5,10,-15),c( "white","#fdbe85","#fd8d3c","#e6550d","#a63603")))
+```
+
+# ?Heatmap 查看帮助
+
