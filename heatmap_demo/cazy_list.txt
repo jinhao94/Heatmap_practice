@@ -1,0 +1,226 @@
+CAZYme	type
+GH105	Animal Carbohydrates
+GH33	Animal Carbohydrates
+GH84	Animal Carbohydrates
+GH92	Animal Carbohydrates
+PL8	Animal Carbohydrates
+PL12	Animal Carbohydrates
+PL21	Animal Carbohydrates
+PL13	Animal Carbohydrates
+GH99	Animal Carbohydrates
+GH85	Animal Carbohydrates
+GH101	Animal Carbohydrates
+GH88	Animal Carbohydrates
+GH18	Animal Carbohydrates
+GH19	Animal Carbohydrates
+GH98	Animal Carbohydrates
+GH113	Animal Carbohydrates
+GH20	Animal Carbohydrates
+GH79	Animal Carbohydrates
+GH89	Animal Carbohydrates
+GH109	Animal Carbohydrates
+GH38	Animal Carbohydrates
+GH110	Animal Carbohydrates
+GH48	Cellulose
+GH44	Cellulose
+GH9	Cellulose
+GH5	Cellulose
+GH35	Mucin
+GH129	Mucin
+PL11	pectin
+GH28	pectin
+CE8	pectin
+CE12	pectin
+CE13	pectin
+PL9	pectin
+PL1	pectin
+PL10	pectin
+GH16	Plant Cell Wall Carbohydrates
+PL22	Plant Cell Wall Carbohydrates
+PL15	Plant Cell Wall Carbohydrates
+GH4	Plant Cell Wall Carbohydrates
+GH15	Plant Cell Wall Carbohydrates
+GH55	Plant Cell Wall Carbohydrates
+GH93	Plant Cell Wall Carbohydrates
+GH74	Plant Cell Wall Carbohydrates
+GH53	Plant Cell Wall Carbohydrates
+GH94	Plant Cell Wall Carbohydrates
+GH26	Plant Cell Wall Carbohydrates
+GH121	Plant Cell Wall Carbohydrates
+GH3	Plant Cell Wall Carbohydrates
+GH1	Plant Cell Wall Carbohydrates
+GH2	Plant Cell Wall Carbohydrates
+GH78	Plant Cell Wall Carbohydrates
+GH39	Plant Cell Wall Carbohydrates
+GH29	Plant Cell Wall Carbohydrates
+GH95	Plant Cell Wall Carbohydrates
+GH36	Plant Cell Wall Carbohydrates
+GH27	Plant Cell Wall Carbohydrates
+GH117	Plant Cell Wall Carbohydrates
+PL6	Plant Cell Wall Carbohydrates
+GT5	Starch
+CBM20	Starch
+CBM26	Starch
+CBM25	Starch
+CBM74	Starch
+CBM34	Starch
+GT35	Starch
+GH77	Starch
+GH13	Starch
+GH57	Starch
+GH68	Sucrose/Fructans
+GH32	Sucrose/Fructans
+GH91	Sucrose/Fructans
+GH70	Sucrose/Fructans
+GH115	xylan
+GH51	xylan
+GH10	xylan
+GH8	xylan
+GH43	xylan
+GH120	xylan
+GH127	xylan
+GH67	xylan
+CE1	xylan
+CE2	xylan
+cohesin	Other
+SLH	Other
+AA4	Other
+GT83	Other
+GT90	Other
+GT26	Other
+GT1	Other
+GT103	Other
+GT41	Other
+GT21	Other
+GT92	Other
+CE11	Other
+CBM38	Other
+CBM66	Other
+CBM62	Other
+GT56	Other
+GT4	Other
+PL26	Other
+PL4	Other
+GH63	Other
+GT87	Other
+GT27	Other
+GH102	Other
+GH103	Other
+GH104	Other
+CBM77	Other
+GT81	Other
+GH108	Other
+GT31	Other
+CE9	Other
+GT23	Other
+CE14	Other
+GH87	Other
+GT51	Other
+CBM5	Other
+CBM50	Other
+CBM40	Other
+CBM9	Other
+CBM76	Other
+CBM42	Other
+CBM13	Other
+CBM3	Other
+CBM4	Other
+CBM51	Other
+CBM61	Other
+CBM78	Other
+CBM35	Other
+CBM79	Other
+CBM6	Other
+CBM37	Other
+CBM48	Other
+CBM41	Other
+CBM2	Other
+CBM46	Other
+CBM47	Other
+CBM27	Other
+CBM23	Other
+GH23	Other
+GH73	Other
+GH24	Other
+GH25	Other
+PL27	Other
+GH145	Other
+GT9	Other
+GT25	Other
+GT8	Other
+GT19	Other
+GH136	Other
+GH112	Other
+GH111	Other
+GT3	Other
+GT101	Other
+AA7	Other
+GH97	Other
+GT94	Other
+GT11	Other
+GT10	Other
+CBM67	Other
+GH125	Other
+GH30	Other
+GH81	Other
+GH144	Other
+GH114	Other
+GT102	Other
+GT104	Other
+GT39	Other
+GT76	Other
+GT66	Other
+GT46	Other
+GH66	Other
+GT84	Other
+CBM57	Other
+GT30	Other
+GT73	Other
+GT99	Other
+GT2	Other
+CBM65	Other
+CBM16	Other
+CBM54	Other
+CBM32	Other
+GH123	Other
+GH137	Other
+GH142	Other
+GH116	Other
+GT80	Other
+GH59	Other
+GH42	Other
+GH14	Other
+GH50	Other
+GT17	Other
+GH130	Other
+GH128	Other
+GH64	Other
+CBM56	Other
+GT14	Other
+CE10	Other
+GH140	Other
+GH133	Other
+GH106	Other
+GH141	Other
+GH31	Other
+GH138	Other
+GH126	Other
+GH139	Other
+GT32	Other
+GH76	Other
+GT6	Other
+GT20	Other
+GH65	Other
+GH37	Other
+PL17	Other
+CE7	Other
+CE4	Other
+CE3	Other
+CE6	Other
+CBM22	Other
+CE15	Other
+GH143	Other
+AA6	Other
+GT28	Other
+GT12	Other
+AA3	Other

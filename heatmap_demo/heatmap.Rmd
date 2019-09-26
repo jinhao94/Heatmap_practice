@@ -1,0 +1,198 @@
+---
+title: "Complexheat_map"
+author: "jinh"
+date: "2019年9月26日"
+output: html_document
+---
+
+# 长注释热图做法2
+### 加载包， 导入数据
+### 数据格式打印如下，加减乘除不能做行名或者列名，所以把数据放到第一行
+
+```{r ,warning=F}
+library(printr)
+library(ComplexHeatmap)
+library(ggplotify)
+library(circlize)
+
+#Data format
+dd<-read.table("input_file.txt",header = T,sep = "\t")
+knitr::kable(head(dd,10),digits =4)
+```
+#### step1
+```{r}
+Heatmap(dd[,3:ncol(dd)])
+```
+####step2 add annotations
+```{r}
+dd_2<-dd[,3:ncol(dd)]
+row.names(dd_2)<-dd$ID2
+row_labels=structure(as.character(dd$ID),names=as.character(dd$ID2))
+Heatmap(dd_2,row_labels=row_labels[rownames(dd_2)], show_column_names = T, cluster_rows = F,show_row_names=T)
+```
+####step3 modified annotations
+```{r}
+Heatmap(dd_2,row_labels=row_labels[rownames(dd_2)], show_column_names = T, cluster_rows = F,show_row_names=T,row_names_gp = gpar(fontsize = 5))
+```
+#### set a beautiful colour
+```{r}
+Heatmap(dd_2,row_labels=row_labels[rownames(dd_2)], show_column_names = T, cluster_rows = F,show_row_names=T,row_names_gp = gpar(fontsize = 5),col = colorRamp2(c(5,0,-5,10,-15),c( "white","#fdbe85","#fd8d3c","#e6550d","#a63603")))
+```
+
+***
+## 参数总结
+1. 要使row_labels生效，需先使用structure函数对名字进行处理
+2. 使用colorRamp2之前要加载circlize
+3. 这个例子也展示了长注释的写法
+
+#复杂热图绘制
+### KEGG SCFA 模块
+```{r,warning=F}
+library(ggpubr)
+library(ggplot2)
+library(circlize)
+library(ComplexHeatmap)
+library(ggplotify)
+```
+
+```{r}
+df<-read.table("452_kegg.out",sep = "\t",header = T,row.names=1)
+ko<-read.table("ko_others",sep="\t") #ko_others
+df<-data.frame(t(df))
+bin_info<-read.table("all_452_mag_info.txt",sep="\t",header = T)
+
+#sub ko
+sub_ko_df<-df[,colnames(df) %in% ko[,1]]
+sub_ko_df_ant<-data.frame(Bin=row.names(sub_ko_df),rawrank=c(1:nrow(sub_ko_df)))
+sub_ko_df_plot<-sub_ko_df
+sub_ko_df_ant_info<-merge(sub_ko_df_ant,bin_info,by="Bin")
+
+#order mapping 
+sub_ko_df_ant_info_ordered<-sub_ko_df_ant_info[order(sub_ko_df_ant_info$rawrank),]
+#order raw data
+sub_ko_df_ant_info_ordered<-sub_ko_df_ant_info[order(sub_ko_df_ant_info$rawrank),]
+
+
+
+c1<-c("#76c5ad","#e89f67") #Cultured uncultured
+c2<-c("#6a92a7","#c0e9f2") #High abundance Low abundance
+c3<-rev(c("#4B78A5","#A8514B","#8BA156","#6A6599FF","#4697AB","#CE8844","#5A8CBF","#A20056B2","#008B45B2","#BB0021B2","#54B0C5","#D5928F","#90ACD2","#F39B7FB2","#BBCE95","#AC9CC0","#84D7E1FF","#FBB98B","#C3CFE3","#E4C4C2","#D6E1C5"))
+#This function design to get col set
+get_col<-function(cha_grp,cc){
+
+	cha_grp<-as.character(cha_grp)
+	cha_grp<-unique(cha_grp)
+	a=character()
+	for (i in 1:length(cha_grp)){
+	a[cha_grp[i]]=cc[i]
+	}
+	return(a)
+}
+
+phylum_col<-get_col(sub_ko_df_ant_info_ordered$Phylum, c3)
+# Function_type_col<-get_col(sub_ko_df_ant_info_ordered$Function_type)
+Cultured_uncultured<-get_col(sub_ko_df_ant_info_ordered$Culture_or_Unculture,c1)
+Abundance_col<-get_col(sub_ko_df_ant_info_ordered$Abundance_v3, c2)
+
+ha_row = rowAnnotation(df = data.frame(Phylum =sub_ko_df_ant_info_ordered$Phylum, Cultured_uncultured = sub_ko_df_ant_info_ordered$Culture_or_Unculture, Abundance=sub_ko_df_ant_info_ordered$Abundance_v3), col = list(Phylum = phylum_col, Cultured_uncultured=Cultured_uncultured, Abundance=Abundance_col), width = unit(0.5, "cm"))
+
+colant<-data.frame(ko=colnames(sub_ko_df_plot))
+colant$rank<-1:nrow(colant)
+colant<-merge(colant,ko,by.x="ko",by.y="V1")
+colant<-colant[order(colant$V2),]
+colant$frank<-1:nrow(colant)
+# colant<-colant[order(colant$rank),]
+
+sub_ko_df_plot<-sub_ko_df_plot[,as.numeric(colant$rank)]
+
+
+ # top_annotation = HeatmapAnnotation(Pathway = colant$V2)
+#右边的注释可以直接加入到图中，变为一个图， rect_gp 控制线的粗细
+h1=Heatmap(sub_ko_df_plot, name = "Gene number",col = colorRamp2(c(0,1,10,100),c( "white","orange","#d73027","#762a83")),cluster_rows = T,show_column_names=T,cluster_columns=F,rect_gp = gpar(col = "gray",lwd = 0.01,alpha=0.2), row_names_gp = gpar(fontsize = 1) ,column_names_gp = gpar(fontsize = 2),column_names_side = "top",top_annotation = HeatmapAnnotation(Pathway = colant$V2),column_split =colant$V2 ,show_row_names=T,row_split=sub_ko_df_ant_info_ordered$Sample,right_annotation=ha_row)
+
+h1
+```
+
+## 总结
+1.上图由于太密集，所以显示不全，可使用如下参数导出合适的图
+
+```{r}
+h1_out<-as.ggplot(h1)
+ggsave(h1_out, file="KEGG_scfa_plot.pdf", height = 16,width = 20)
+```
+
+2.rect_gp 调节每个网格之间线的粗细，如果太密集可以设置alpha参数
+3.top_annotation是column注释，后续可添加其它花样
+4.right_annotation的用法
+
+```{r}
+## 绘制CAZY图
+library(ggplotify)
+library(ggpubr)
+library(ggplot2)
+library(circlize)
+library(ComplexHeatmap)
+df<-read.table("452_cazy.out",sep = "\t",header = T,row.names=1)
+df<-data.frame(t(df))
+ko<-read.table("cazy_list.txt",sep="\t") #ko_others
+bin_info<-read.table("all_452_mag_info.txt",sep="\t",header = T)
+sub_ko_df<-df[,colnames(df) %in% ko[,1]]
+sub_ko_df_ant<-data.frame(Bin=row.names(sub_ko_df),rawrank=c(1:nrow(sub_ko_df)))
+sub_ko_df_plot<-sub_ko_df
+sub_ko_df_ant_info<-merge(sub_ko_df_ant,bin_info,by="Bin")
+
+#order mapping 
+sub_ko_df_ant_info_ordered<-sub_ko_df_ant_info[order(sub_ko_df_ant_info$rawrank),]
+#order raw data
+sub_ko_df_ant_info_ordered<-sub_ko_df_ant_info[order(sub_ko_df_ant_info$rawrank),]
+
+c1<-c("#76c5ad","#e89f67") #Cultured uncultured
+c2<-c("#6a92a7","#c0e9f2") #High abundance Low abundance
+c3<-rev(c("#4B78A5","#A8514B","#8BA156","#6A6599FF","#4697AB","#CE8844","#5A8CBF","#A20056B2","#008B45B2","#BB0021B2","#54B0C5","#D5928F","#90ACD2","#F39B7FB2","#BBCE95","#AC9CC0","#84D7E1FF","#FBB98B","#C3CFE3","#E4C4C2","#D6E1C5"))
+# This function design to get col set
+# get_col<-function(cha_grp,cc){
+# 
+#   cha_grp<-as.character(cha_grp)
+#   cha_grp<-unique(cha_grp)
+#   a=character()
+#   for (i in 1:length(cha_grp)){
+#     a[cha_grp[i]]=cc[i]
+#   }
+#   return(a)
+# }
+
+sub_ko_df_ant_info_ordered$Phylum<-factor(sub_ko_df_ant_info_ordered$Phylum, levels=c("p_Firmicutes","p_Proteobacteria","p_Bacteroidetes","p_Actinobacteria","p_Fusobacteria","p_Verrucomicrobia","p_Euryarchaeota"))
+
+#用于第二轮颜色对齐
+a=character()
+cc=c("#d6ffc5","#E4C4C2","#c3cfe3","#fbb98b","#84d7e1","#ac9cc0","#bbce95")
+cha_grp<-c("p_Firmicutes","p_Proteobacteria","p_Bacteroidetes","p_Actinobacteria","p_Fusobacteria","p_Verrucomicrobia","p_Euryarchaeota")
+for (i in 1:length(cha_grp)){
+    a[cha_grp[i]]=cc[i]
+  }
+phylum_col<-a
+
+
+Cultured_uncultured<-c("Y"="#e89f67","N"="#76c5ad")
+Abundance_col<-c("Low"="#c0e9f2","High"="#6a92a7")
+
+colant<-data.frame(ko=colnames(sub_ko_df_plot))
+colant$rank<-1:nrow(colant)
+colant<-merge(colant,ko,by.x="ko",by.y="V1")
+colant<-colant[order(colant$rank),]
+
+#列名排序，很重要
+colant$V2<-factor(colant$V2, levels = c("Animal Carbohydrates","Plant Cell Wall Carbohydrates","Mucin","pectin","Sucrose/Fructans","Starch","xylan","Cellulose","Other"))
+
+sub_ko_df_ant_info_ordered$Phylum<-factor(sub_ko_df_ant_info_ordered$Phylum, levels=c("p_Firmicutes","p_Proteobacteria","p_Bacteroidetes","p_Actinobacteria","p_Fusobacteria","p_Verrucomicrobia","p_Euryarchaeota"))
+
+
+ha_row2 = rowAnnotation(df = data.frame(Phylum =sub_ko_df_ant_info_ordered$Phylum, Cultured_uncultured = sub_ko_df_ant_info_ordered$Culture_or_Unculture, Abundance=sub_ko_df_ant_info_ordered$Abundance_v3), col = list(Phylum = phylum_col, Cultured_uncultured=Cultured_uncultured, Abundance=Abundance_col), width = unit(0.5, "cm"))
+
+h2=Heatmap(sub_ko_df_plot, name = "Gene number",col = colorRamp2(c(0,1,10,100),c( "white","orange","#d73027","#762a83")),cluster_rows = T,show_column_names=T,cluster_columns=F,rect_gp = gpar(col = "gray",lwd = 0.01,alpha=0.2), row_names_gp = gpar(fontsize = 1) ,column_names_gp = gpar(fontsize = 2),column_names_side = "top",top_annotation = HeatmapAnnotation(Pathway = colant$V2),column_split =colant$V2 ,show_row_names=T,row_split=sub_ko_df_ant_info_ordered$Sample,right_annotation=ha_row2)
+
+h2
+#save data
+h2_out<-as.ggplot(h2)
+ggsave(h2_out, file="CAZYme_plot.pdf", height = 16,width = 20)
+```
